@@ -68,4 +68,25 @@ class Component extends Util
     {
         return $this->xProperties;
     }
+
+    public function deleteProperty($name)
+    {
+        return $this->deletePropertyFrom($this->properties, $name);
+    }
+
+    public function deleteXProperty($name)
+    {
+        return $this->deletePropertyFrom($this->xProperties, $name);
+    }
+
+    protected function deletePropertyFrom($properties, $name)
+    {
+        $name = strtoupper($name);
+        if (!array_key_exists($name, $properties)) {
+            return false;
+        }
+
+        array_splice($properties, $name, 1);
+        return true;
+    }
 }
