@@ -21,6 +21,8 @@ class Calendar
     /** @var Stream */
     protected $stream;
 
+    protected $fileExt = '.ext';
+
 
     public function __construct()
     {
@@ -172,7 +174,7 @@ class Calendar
     {
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         if (empty($ext)) {
-            $filename .= '.ics';
+            $filename .= $this->fileExt;
         }
 
         header('Content-type: text/calendar; charset=utf-8');
