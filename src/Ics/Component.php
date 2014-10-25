@@ -69,16 +69,47 @@ class Component extends Util
         return $this->xProperties;
     }
 
+    /**
+     * @param string $name
+     * @return null|string
+     */
+    public function getProperty($name)
+    {
+        return $this->getPropertyFrom($this->properties, $name);
+    }
+
+    /**
+     * @param string $name
+     * @return null|string
+     */
+    public function getXProperty($name)
+    {
+        return $this->getPropertyFrom($this->xProperties, $name);
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function deleteProperty($name)
     {
         return $this->deletePropertyFrom($this->properties, $name);
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function deleteXProperty($name)
     {
         return $this->deletePropertyFrom($this->xProperties, $name);
     }
 
+    /**
+     * @param array $properties
+     * @param string $name
+     * @return bool
+     */
     protected function deletePropertyFrom($properties, $name)
     {
         $name = strtoupper($name);
@@ -88,5 +119,20 @@ class Component extends Util
 
         array_splice($properties, $name, 1);
         return true;
+    }
+
+    /**
+     * @param array  $properties
+     * @param string $name
+     * @return null|string
+     */
+    protected function getPropertyFrom($properties, $name)
+    {
+        $name = strtoupper($name);
+        if (!array_key_exists($name, $properties)) {
+            return null;
+        }
+
+        return $properties[$name];
     }
 }
