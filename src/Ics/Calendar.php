@@ -158,7 +158,13 @@ class Calendar
 
         foreach ($this->getComponents() as $component) {
             foreach ($component->getProperties() as $key => $value) {
-                $st->add($key . ':' . $value);
+                if (is_array($value)) {
+                    foreach ($value as $k => $v) {
+                        $st->add($k . ':' . $v);
+                    }
+                } else {
+                    $st->add($key . ':' . $value);
+                }
             }
             foreach ($component->getXProperties() as $item) {
                 $st->add($item);
