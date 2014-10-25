@@ -1,6 +1,6 @@
 <?php
 
-namespace Ics\Component;
+namespace Ics\Relationship;
 
 use Ics\Relationship;
 
