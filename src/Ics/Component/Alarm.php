@@ -6,13 +6,14 @@ use DateInterval;
 use DateTime;
 use Ics\Component;
 use InvalidArgumentException;
+use Ics\Relationship\Attendee;
 
 class Alarm extends Component
 {
 
-    const ACTION_AUDIO = 'audioprop';
-    const ACTION_DISPLAY = 'dispprop';
-    const ACTION_EMAIL = 'emailprop';
+    const ACTION_AUDIO = 'AUDIO';
+    const ACTION_DISPLAY = 'DISPLAY';
+    const ACTION_EMAIL = 'EMAIL';
 
     protected $component_name = 'VALARM';
 
@@ -27,7 +28,7 @@ class Alarm extends Component
             throw new InvalidArgumentException('The attribute "action" is not valid');
         }
 
-        $this->action = $action;
+        $this->setAction($action);
     }
 
     /**
@@ -127,7 +128,10 @@ class Alarm extends Component
             throw new \Exception();
         }
 
-        if (!((empty($this->properties['DURATION']) && empty($this->properties['REPEAT'])) || (!empty($this->properties['DURATION']) && !empty($this->properties['REPEAT'])))) {
+        if (!(
+            (empty($this->properties['DURATION']) && empty($this->properties['REPEAT'])) ||
+            (!empty($this->properties['DURATION']) && !empty($this->properties['REPEAT']))
+        )) {
             throw new \Exception();
         }
 

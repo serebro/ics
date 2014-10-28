@@ -5,6 +5,8 @@ namespace Ics\Component;
 use DateTime;
 use Ics\Component;
 use InvalidArgumentException;
+use Ics\Relationship\Attendee;
+use Ics\Relationship\Organizer;
 
 class Event extends Component
 {
@@ -14,6 +16,10 @@ class Event extends Component
     const STATUS_CANCELLED = 'CANCELLED';
 
     protected $component_name = 'VEVENT';
+
+    /** @var  Alarm */
+    protected $alarm;
+
 
     public function __construct()
     {
@@ -28,7 +34,7 @@ class Event extends Component
      */
     public function setComment($comment)
     {
-        $this->properties['COMMENT'] = ':' . $comment;
+        $this->properties['COMMENT'] = ':' . $this->escape($comment);
         return $this;
     }
 
@@ -91,7 +97,7 @@ class Event extends Component
      * @param string $name
      * @return $this
      */
-    public function addLocation($uri, $lang, $name)
+    public function setLocation($uri, $lang, $name)
     {
         $property_name = 'LOCATION' . $uri . $lang . ':';
         $this->properties[$property_name] = $name;
@@ -118,7 +124,7 @@ class Event extends Component
      */
     public function setSummary($summary)
     {
-        $this->properties['SUMMARY'] = ':' . $summary;
+        $this->properties['SUMMARY'] = ':' . $this->escape($summary);
         return $this;
     }
 
@@ -214,11 +220,48 @@ class Event extends Component
     }
 
     /**
+     * @param Alarm $alarm
+     * @return $this
+     */
+    public function setAlarm(Alarm $alarm)
+    {
+        $this->alarm = $alarm;
+        return $this;
+    }
+
+    /**
+     * @return Alarm
+     */
+    public function getAlarm()
+    {
+        return $this->alarm;
+    }
+
+    /**
      * @throws \Exception
      * @return array
      */
     public function getProperties()
     {
+        $properties = array();
+        $xProperties = array();
+
+        if ($this->alarm) {
+            foreach($this->alarm->getProperties() as $key => $value) {
+                $properties[$key] = $value;
+            }
+            foreach($this->alarm->getXProperties() as $item) {
+                $xProperties[] = $item;
+            }
+        }
+
+        if (count($properties)) {
+            $this->properties[] = $properties;
+        }
+        if (count($xProperties)) {
+            $this->xProperties[] = $xProperties;
+        }
+
         return parent::getProperties();
     }
 

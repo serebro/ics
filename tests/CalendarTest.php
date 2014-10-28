@@ -27,9 +27,9 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $event->setDescription('description');
         //$event->setOrganizer();
         $event->setPriority(1);
+        $event->setStartDate($now);
         $event->setEndDate($now->modify('+2 hour'));
         $event->setLastModifiedDate($now->modify('+1 hour'));
-        $event->setStartDate($now);
         $event->setStatus(Event::STATUS_CONFIRMED);
         $event->setSummary('summary');
         $event->setUid('uid');
@@ -38,7 +38,7 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $calendar = new Calendar();
         $calendar->addComponent($event);
         $actual = $calendar->toString();
-        $expected = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//ICS//Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN::VEVENT\r\nCLASS::CONFIDENTIAL\r\nUID::uid\r\nCATEGORIES::APPOINTMENT,EDUCATION\r\nCOMMENT::comment\r\nCREATED::20141025T202600Z\r\nDESCRIPTION::description\r\nPRIORITY::1\r\nDTEND::20141025T222600Z\r\nLAST-MODIFIED::20141025T232600Z\r\nDTSTART::20141025T232600Z\r\nSTATUS::CONFIRMED\r\nSUMMARY::summary\r\nURL::http://example.com\r\nEND::VEVENT\r\nEND:VCALENDAR\r\n";
+        $expected = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//ICS//Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nCLASS:CONFIDENTIAL\r\nUID:uid\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nCOMMENT:comment\r\nCREATED:20141025T202600Z\r\nDESCRIPTION:description\r\nPRIORITY:1\r\nDTSTART:20141025T202600Z\r\nDTEND:20141025T222600Z\r\nLAST-MODIFIED:20141025T232600Z\r\nSTATUS:CONFIRMED\r\nSUMMARY:summary\r\nURL:http://example.com\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n";
         $this->assertEquals($expected, $actual);
     }
 
@@ -56,7 +56,7 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $calendar = new Calendar();
         $calendar->addComponent($alert);
         $actual = $calendar->toString();
-        $expected = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//ICS//Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN::VALARM\r\nDESCRIPTION::description\r\nDURATION::PT60S\r\nREPEAT::1\r\nTRIGGER:;VALUE=DATE-TIME:20141025T202600Z\r\nSUMMARY::summary\r\nEND::VALARM\r\nEND:VCALENDAR\r\n";
+        $expected = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//ICS//Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:description\r\nDURATION:PT60S\r\nREPEAT:1\r\nTRIGGER;VALUE=DATE-TIME:20141025T202600Z\r\nSUMMARY:summary\r\nEND:VALARM\r\nEND:VCALENDAR\r\n";
         $this->assertEquals($expected, $actual);
     }
 }

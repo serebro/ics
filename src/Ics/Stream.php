@@ -9,6 +9,13 @@ class Stream
 
     protected $stream = '';
 
+    protected $encoding = 'UTF-8';
+
+
+    public function __construct($encoding = 'UTF-8')
+    {
+        $this->encoding = $encoding;
+    }
 
     public function reset()
     {
@@ -31,12 +38,11 @@ class Stream
         $length = strlen($item);
 
         $block = '';
-
-        if ($length > 75) {
+        if ($length > self::LINE_LENGTH + 5) {
             $start = 0;
 
             while ($start < $length) {
-                $block .= mb_strcut($item, $start, self::LINE_LENGTH, 'UTF-8');
+                $block .= mb_strcut($item, $start, self::LINE_LENGTH, $this->encoding);
                 $start = $start + self::LINE_LENGTH;
 
                 //add space if not last line

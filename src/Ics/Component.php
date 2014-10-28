@@ -46,7 +46,7 @@ class Component extends Util
      */
     public function setDescription($description)
     {
-        $this->properties['DESCRIPTION'] = ':' . $description;
+        $this->properties['DESCRIPTION'] = ':' . $this->escape(trim($description));
         return $this;
     }
 
@@ -57,6 +57,8 @@ class Component extends Util
      */
     public function setXProperty($name, $value)
     {
+        $name = trim($name);
+        $value = trim($value);
         $this->xProperties[] = "$name:$value";
         return $this;
     }

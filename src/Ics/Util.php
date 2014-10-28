@@ -59,4 +59,17 @@ class Util
         return $uri;
     }
 
+    /**
+     * @param string $string
+     * @return string
+     */
+    protected function escape($string) {
+        $eol = "\n";
+        $string = preg_replace("/[\r\n]+/", $eol, $string);
+        $string = preg_replace('/\<br(\s*)?\/?\>/i', $eol, $string);
+        $string = strip_tags($string);
+        $string = html_entity_decode($string, ENT_QUOTES);
+        return preg_replace('/([\,;])/','\\\$1', $string);
+    }
+
 }

@@ -160,10 +160,10 @@ class Calendar
             foreach ($component->getProperties() as $key => $value) {
                 if (is_array($value)) {
                     foreach ($value as $k => $v) {
-                        $st->add($k . ':' . $v);
+                        $st->add($k . $v);
                     }
                 } else {
-                    $st->add($key . ':' . $value);
+                    $st->add($key . $value);
                 }
             }
             foreach ($component->getXProperties() as $item) {
